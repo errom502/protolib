@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package verification_service.v1;
+import "verification-service/v1/verification.proto";
+
+option go_package = "github.com/errom502/protolib/gen/verification-service/v1;verificationv1";
+
+// VerificationService сервис для работы с верификациями
+service VerificationService {
+    // Создание верификации
+    rpc Create(CreateRequest) returns (CreateResponse);
+    // Получение верификации по идентификатору
+    rpc Get(GetRequest) returns (GetResponse);
+    // Повторная верификация для существующей верификации
+    rpc Retry(RetryRequest) returns (RetryResponse);
+    // Подтверждение верификации
+    rpc Verify(VerifyRequest) returns (VerifyResponse);
+}
+
+message VerifyRequest{
+    // Идентификатор верификации
+    string id = 1;
+    // Тип провайдера
+    ProviderType provider_type = 2;
+    // Хэш секрета
+    string hash_secret = 3;
+}
+
+message VerifyResponse{
+}
+
+message RetryRequest{
+    // Идентификатор верификации
+    string id = 1;
+}
+
+message RetryResponse{
+}
+
+message GetRequest{
+    // Идентификатор верификации
+    string id = 1;
+}
+
+message GetResponse{
+    // Верификация
+    Verification verification = 1;
+}
+
+message CreateRequest{
+    // Внешний идентификатор
+    string ext_id = 1;
+    // Тип провайдера
+    ProviderType provider_type = 2;
+    // Значение цели верификации (почта, номер телефона)
+    string target = 3;
+}
+
+message CreateResponse{
+    // Идентификатор верификации uuid
+    string id = 1;
+}

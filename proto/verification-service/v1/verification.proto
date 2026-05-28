@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package verification_service.v1;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/errom502/protolib/gen/verification-service/v1;verificationv1";
+
+message Verification{
+    // Идентификатор верификации uuid
+    string id = 1;
+    // Внешний идентификатор
+    string ext_id = 2;
+    // Тип провайдера
+    ProviderType provider_type = 3;
+    // Значение цели верификации (почта, номер телефона)
+    string target = 4;
+    // Статус верификации
+    VerificationStatus status = 5;
+    // Время истечения верификации
+    google.protobuf.Timestamp expires_at = 6;
+    // Время подтверждения верификации
+    google.protobuf.Timestamp verified_at = 7;
+    // Время создания верификации
+    google.protobuf.Timestamp created_at = 8;
+};
+
+
+enum VerificationStatus {
+    VERIFICATION_STATUS_INVALID = 0;
+    VERIFICATION_STATUS_PENDING = 1;
+    VERIFICATION_STATUS_VERIFIED = 2;
+    VERIFICATION_STATUS_FAILED = 3;
+    VERIFICATION_STATUS_EXPIRED = 4;
+}
+
+// Тип провайдера
+enum ProviderType {
+    PROVIDER_TYPE_INVALID = 0;
+    PROVIDER_TYPE_EMAIL = 1;
+}
