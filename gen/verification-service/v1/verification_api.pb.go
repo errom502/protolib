@@ -25,10 +25,8 @@ type VerifyRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Идентификатор верификации
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Тип провайдера
-	ProviderType ProviderType `protobuf:"varint,2,opt,name=provider_type,json=providerType,proto3,enum=verification_service.v1.ProviderType" json:"provider_type,omitempty"`
 	// Хэш секрета
-	HashSecret    string `protobuf:"bytes,3,opt,name=hash_secret,json=hashSecret,proto3" json:"hash_secret,omitempty"`
+	HashSecret    string `protobuf:"bytes,2,opt,name=hash_secret,json=hashSecret,proto3" json:"hash_secret,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -68,13 +66,6 @@ func (x *VerifyRequest) GetId() string {
 		return x.Id
 	}
 	return ""
-}
-
-func (x *VerifyRequest) GetProviderType() ProviderType {
-	if x != nil {
-		return x.ProviderType
-	}
-	return ProviderType_PROVIDER_TYPE_INVALID
 }
 
 func (x *VerifyRequest) GetHashSecret() string {
@@ -403,11 +394,10 @@ var File_verification_service_v1_verification_api_proto protoreflect.FileDescrip
 
 const file_verification_service_v1_verification_api_proto_rawDesc = "" +
 	"\n" +
-	".verification-service/v1/verification_api.proto\x12\x17verification_service.v1\x1a*verification-service/v1/verification.proto\"\x8c\x01\n" +
+	".verification-service/v1/verification_api.proto\x12\x17verification_service.v1\x1a*verification-service/v1/verification.proto\"@\n" +
 	"\rVerifyRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12J\n" +
-	"\rprovider_type\x18\x02 \x01(\x0e2%.verification_service.v1.ProviderTypeR\fproviderType\x12\x1f\n" +
-	"\vhash_secret\x18\x03 \x01(\tR\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1f\n" +
+	"\vhash_secret\x18\x02 \x01(\tR\n" +
 	"hashSecret\"\x10\n" +
 	"\x0eVerifyResponse\"\x1e\n" +
 	"\fRetryRequest\x12\x0e\n" +
@@ -452,26 +442,25 @@ var file_verification_service_v1_verification_api_proto_goTypes = []any{
 	(*GetResponse)(nil),    // 5: verification_service.v1.GetResponse
 	(*CreateRequest)(nil),  // 6: verification_service.v1.CreateRequest
 	(*CreateResponse)(nil), // 7: verification_service.v1.CreateResponse
-	(ProviderType)(0),      // 8: verification_service.v1.ProviderType
-	(*Verification)(nil),   // 9: verification_service.v1.Verification
+	(*Verification)(nil),   // 8: verification_service.v1.Verification
+	(ProviderType)(0),      // 9: verification_service.v1.ProviderType
 }
 var file_verification_service_v1_verification_api_proto_depIdxs = []int32{
-	8, // 0: verification_service.v1.VerifyRequest.provider_type:type_name -> verification_service.v1.ProviderType
-	9, // 1: verification_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
-	8, // 2: verification_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
-	6, // 3: verification_service.v1.VerificationService.Create:input_type -> verification_service.v1.CreateRequest
-	4, // 4: verification_service.v1.VerificationService.Get:input_type -> verification_service.v1.GetRequest
-	2, // 5: verification_service.v1.VerificationService.Retry:input_type -> verification_service.v1.RetryRequest
-	0, // 6: verification_service.v1.VerificationService.Verify:input_type -> verification_service.v1.VerifyRequest
-	7, // 7: verification_service.v1.VerificationService.Create:output_type -> verification_service.v1.CreateResponse
-	5, // 8: verification_service.v1.VerificationService.Get:output_type -> verification_service.v1.GetResponse
-	3, // 9: verification_service.v1.VerificationService.Retry:output_type -> verification_service.v1.RetryResponse
-	1, // 10: verification_service.v1.VerificationService.Verify:output_type -> verification_service.v1.VerifyResponse
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	8, // 0: verification_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
+	9, // 1: verification_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
+	6, // 2: verification_service.v1.VerificationService.Create:input_type -> verification_service.v1.CreateRequest
+	4, // 3: verification_service.v1.VerificationService.Get:input_type -> verification_service.v1.GetRequest
+	2, // 4: verification_service.v1.VerificationService.Retry:input_type -> verification_service.v1.RetryRequest
+	0, // 5: verification_service.v1.VerificationService.Verify:input_type -> verification_service.v1.VerifyRequest
+	7, // 6: verification_service.v1.VerificationService.Create:output_type -> verification_service.v1.CreateResponse
+	5, // 7: verification_service.v1.VerificationService.Get:output_type -> verification_service.v1.GetResponse
+	3, // 8: verification_service.v1.VerificationService.Retry:output_type -> verification_service.v1.RetryResponse
+	1, // 9: verification_service.v1.VerificationService.Verify:output_type -> verification_service.v1.VerifyResponse
+	6, // [6:10] is the sub-list for method output_type
+	2, // [2:6] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_verification_service_v1_verification_api_proto_init() }

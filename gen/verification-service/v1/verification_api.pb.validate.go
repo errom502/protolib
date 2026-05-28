@@ -59,8 +59,6 @@ func (m *VerifyRequest) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for ProviderType
-
 	// no validation rules for HashSecret
 
 	if len(errors) > 0 {

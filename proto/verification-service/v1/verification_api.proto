@@ -20,10 +20,8 @@ service VerificationService {
 message VerifyRequest{
     // Идентификатор верификации
     string id = 1;
-    // Тип провайдера
-    ProviderType provider_type = 2;
     // Хэш секрета
-    string hash_secret = 3;
+    string hash_secret = 2;
 }
 
 message VerifyResponse{
