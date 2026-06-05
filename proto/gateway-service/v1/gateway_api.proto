@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package gateway_service.v1;
+import "verification-service/v1/verification_api.proto";
+import "verification-service/v1/verification.proto";
+
+option go_package = "github.com/errom502/protolib/gen/gateway-service/v1;gatewayv1";
+
+// GatewayService сервис для взаимодействия с системой верификациями
+service GatewayService {
+    // Создание верификации
+    rpc Create(CreateRequest) returns (CreateResponse);
+    // Получение верификации по идентификатору
+    rpc Get(GetRequest) returns (GetResponse);
+    // Повторная верификация для существующей верификации
+    rpc Retry(RetryRequest) returns (RetryResponse);
+    // Подтверждение верификации
+    rpc Verify(VerifyRequest) returns (VerifyResponse);
+}
+
+message VerifyRequest{
+    // Идентификатор верификации
+    string id = 1;
+    // Хэш секрета
+    string hash_secret = 2;
+}
+
+message VerifyResponse{
+}
+
+message RetryRequest{
+    // Идентификатор верификации
+    string id = 1;
+}
+
+message RetryResponse{
+}
+
+message GetRequest{
+    // Идентификатор верификации
+    string id = 1;
+}
+
+message GetResponse{
+    // Верификация
+    verification_service.v1.Verification verification = 1;
+}
+
+message CreateRequest{
+    // Внешний идентификатор
+    string ext_id = 1;
+    // Тип провайдера
+    verification_service.v1.ProviderType provider_type = 2;
+    // Значение цели верификации (почта, номер телефона)
+    string target = 3;
+}
+
+message CreateResponse{
+    // Идентификатор верификации uuid
+    string id = 1;
+}
