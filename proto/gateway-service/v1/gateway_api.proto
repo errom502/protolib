@@ -14,18 +14,6 @@ service GatewayService {
     rpc Get(GetRequest) returns (GetResponse);
     // Повторная верификация для существующей верификации
     rpc Retry(RetryRequest) returns (RetryResponse);
-    // Подтверждение верификации
-    rpc Verify(VerifyRequest) returns (VerifyResponse);
-}
-
-message VerifyRequest{
-    // Идентификатор верификации
-    string id = 1;
-    // Хэш секрета
-    string hash_secret = 2;
-}
-
-message VerifyResponse{
 }
 
 message RetryRequest{
