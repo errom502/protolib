@@ -456,7 +456,7 @@ var File_gateway_service_v1_gateway_api_proto protoreflect.FileDescriptor
 
 const file_gateway_service_v1_gateway_api_proto_rawDesc = "" +
 	"\n" +
-	"$gateway-service/v1/gateway_api.proto\x12\x12gateway_service.v1\x1a.verification-service/v1/verification_api.proto\x1a*verification-service/v1/verification.proto\"\xae\x02\n" +
+	"$gateway-service/v1/gateway_api.proto\x12\x12gateway_service.v1\x1a*verification-service/v1/verification.proto\"\xae\x02\n" +
 	"\rFilterRequest\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x17\n" +
 	"\aext_ids\x18\x02 \x03(\tR\x06extIds\x12\x18\n" +

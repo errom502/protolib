@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package gateway_service.v1;
-import "verification-service/v1/verification_api.proto";
 import "verification-service/v1/verification.proto";
 
 option go_package = "github.com/errom502/protolib/gen/gateway-service/v1;gatewayv1";
