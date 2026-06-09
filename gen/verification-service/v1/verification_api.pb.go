@@ -21,6 +21,157 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type FilterRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Набор идентификаторов верификаций
+	Ids []string `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
+	// Набор внешних идентификаторов
+	ExtIds []string `protobuf:"bytes,2,rep,name=ext_ids,json=extIds,proto3" json:"ext_ids,omitempty"`
+	// Набор значений целей (Пример: some.some@mail.ru)
+	Targets []string `protobuf:"bytes,4,rep,name=targets,proto3" json:"targets,omitempty"`
+	// Набор статусов варификации
+	Statuses []VerificationStatus `protobuf:"varint,5,rep,packed,name=statuses,proto3,enum=verification_service.v1.VerificationStatus" json:"statuses,omitempty"`
+	// Тип провайдера
+	ProviderType *ProviderType `protobuf:"varint,3,opt,name=provider_type,json=providerType,proto3,enum=verification_service.v1.ProviderType,oneof" json:"provider_type,omitempty"`
+	// Лимит
+	Limit int32 `protobuf:"varint,6,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Отступ
+	Offset        int32 `protobuf:"varint,7,opt,name=offset,proto3" json:"offset,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FilterRequest) Reset() {
+	*x = FilterRequest{}
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FilterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilterRequest) ProtoMessage() {}
+
+func (x *FilterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilterRequest.ProtoReflect.Descriptor instead.
+func (*FilterRequest) Descriptor() ([]byte, []int) {
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *FilterRequest) GetIds() []string {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetExtIds() []string {
+	if x != nil {
+		return x.ExtIds
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetTargets() []string {
+	if x != nil {
+		return x.Targets
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetStatuses() []VerificationStatus {
+	if x != nil {
+		return x.Statuses
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetProviderType() ProviderType {
+	if x != nil && x.ProviderType != nil {
+		return *x.ProviderType
+	}
+	return ProviderType_PROVIDER_TYPE_INVALID
+}
+
+func (x *FilterRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *FilterRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+type FilterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Verifications []*Verification        `protobuf:"bytes,1,rep,name=verifications,proto3" json:"verifications,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FilterResponse) Reset() {
+	*x = FilterResponse{}
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FilterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilterResponse) ProtoMessage() {}
+
+func (x *FilterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilterResponse.ProtoReflect.Descriptor instead.
+func (*FilterResponse) Descriptor() ([]byte, []int) {
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *FilterResponse) GetVerifications() []*Verification {
+	if x != nil {
+		return x.Verifications
+	}
+	return nil
+}
+
+func (x *FilterResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 type VerifyRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Идентификатор верификации
@@ -33,7 +184,7 @@ type VerifyRequest struct {
 
 func (x *VerifyRequest) Reset() {
 	*x = VerifyRequest{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[0]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +196,7 @@ func (x *VerifyRequest) String() string {
 func (*VerifyRequest) ProtoMessage() {}
 
 func (x *VerifyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[0]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +209,7 @@ func (x *VerifyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyRequest.ProtoReflect.Descriptor instead.
 func (*VerifyRequest) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{0}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *VerifyRequest) GetId() string {
@@ -83,7 +234,7 @@ type VerifyResponse struct {
 
 func (x *VerifyResponse) Reset() {
 	*x = VerifyResponse{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[1]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +246,7 @@ func (x *VerifyResponse) String() string {
 func (*VerifyResponse) ProtoMessage() {}
 
 func (x *VerifyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[1]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +259,7 @@ func (x *VerifyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyResponse.ProtoReflect.Descriptor instead.
 func (*VerifyResponse) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{1}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{3}
 }
 
 type RetryRequest struct {
@@ -121,7 +272,7 @@ type RetryRequest struct {
 
 func (x *RetryRequest) Reset() {
 	*x = RetryRequest{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[2]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -133,7 +284,7 @@ func (x *RetryRequest) String() string {
 func (*RetryRequest) ProtoMessage() {}
 
 func (x *RetryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[2]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -146,7 +297,7 @@ func (x *RetryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RetryRequest.ProtoReflect.Descriptor instead.
 func (*RetryRequest) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{2}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *RetryRequest) GetId() string {
@@ -164,7 +315,7 @@ type RetryResponse struct {
 
 func (x *RetryResponse) Reset() {
 	*x = RetryResponse{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[3]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +327,7 @@ func (x *RetryResponse) String() string {
 func (*RetryResponse) ProtoMessage() {}
 
 func (x *RetryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[3]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +340,7 @@ func (x *RetryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RetryResponse.ProtoReflect.Descriptor instead.
 func (*RetryResponse) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{3}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{5}
 }
 
 type GetRequest struct {
@@ -202,7 +353,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[4]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -214,7 +365,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[4]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -227,7 +378,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{4}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetRequest) GetId() string {
@@ -247,7 +398,7 @@ type GetResponse struct {
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[5]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -259,7 +410,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[5]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -272,7 +423,7 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{5}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetResponse) GetVerification() *Verification {
@@ -296,7 +447,7 @@ type CreateRequest struct {
 
 func (x *CreateRequest) Reset() {
 	*x = CreateRequest{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[6]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -308,7 +459,7 @@ func (x *CreateRequest) String() string {
 func (*CreateRequest) ProtoMessage() {}
 
 func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[6]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -321,7 +472,7 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{6}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateRequest) GetExtId() string {
@@ -355,7 +506,7 @@ type CreateResponse struct {
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[7]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -367,7 +518,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_verification_service_v1_verification_api_proto_msgTypes[7]
+	mi := &file_verification_service_v1_verification_api_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -380,7 +531,7 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{7}
+	return file_verification_service_v1_verification_api_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateResponse) GetId() string {
@@ -394,7 +545,19 @@ var File_verification_service_v1_verification_api_proto protoreflect.FileDescrip
 
 const file_verification_service_v1_verification_api_proto_rawDesc = "" +
 	"\n" +
-	".verification-service/v1/verification_api.proto\x12\x17verification_service.v1\x1a*verification-service/v1/verification.proto\"@\n" +
+	".verification-service/v1/verification_api.proto\x12\x17verification_service.v1\x1a*verification-service/v1/verification.proto\"\xae\x02\n" +
+	"\rFilterRequest\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x17\n" +
+	"\aext_ids\x18\x02 \x03(\tR\x06extIds\x12\x18\n" +
+	"\atargets\x18\x04 \x03(\tR\atargets\x12G\n" +
+	"\bstatuses\x18\x05 \x03(\x0e2+.verification_service.v1.VerificationStatusR\bstatuses\x12O\n" +
+	"\rprovider_type\x18\x03 \x01(\x0e2%.verification_service.v1.ProviderTypeH\x00R\fproviderType\x88\x01\x01\x12\x14\n" +
+	"\x05limit\x18\x06 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\a \x01(\x05R\x06offsetB\x10\n" +
+	"\x0e_provider_type\"s\n" +
+	"\x0eFilterResponse\x12K\n" +
+	"\rverifications\x18\x01 \x03(\v2%.verification_service.v1.VerificationR\rverifications\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"@\n" +
 	"\rVerifyRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1f\n" +
 	"\vhash_secret\x18\x02 \x01(\tR\n" +
@@ -413,12 +576,13 @@ const file_verification_service_v1_verification_api_proto_rawDesc = "" +
 	"\rprovider_type\x18\x02 \x01(\x0e2%.verification_service.v1.ProviderTypeR\fproviderType\x12\x16\n" +
 	"\x06target\x18\x03 \x01(\tR\x06target\" \n" +
 	"\x0eCreateResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xf5\x02\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id2\xd0\x03\n" +
 	"\x13VerificationService\x12Y\n" +
 	"\x06Create\x12&.verification_service.v1.CreateRequest\x1a'.verification_service.v1.CreateResponse\x12P\n" +
 	"\x03Get\x12#.verification_service.v1.GetRequest\x1a$.verification_service.v1.GetResponse\x12V\n" +
 	"\x05Retry\x12%.verification_service.v1.RetryRequest\x1a&.verification_service.v1.RetryResponse\x12Y\n" +
-	"\x06Verify\x12&.verification_service.v1.VerifyRequest\x1a'.verification_service.v1.VerifyResponseBIZGgithub.com/errom502/protolib/gen/verification-service/v1;verificationv1b\x06proto3"
+	"\x06Verify\x12&.verification_service.v1.VerifyRequest\x1a'.verification_service.v1.VerifyResponse\x12Y\n" +
+	"\x06Filter\x12&.verification_service.v1.FilterRequest\x1a'.verification_service.v1.FilterResponseBIZGgithub.com/errom502/protolib/gen/verification-service/v1;verificationv1b\x06proto3"
 
 var (
 	file_verification_service_v1_verification_api_proto_rawDescOnce sync.Once
@@ -432,35 +596,43 @@ func file_verification_service_v1_verification_api_proto_rawDescGZIP() []byte {
 	return file_verification_service_v1_verification_api_proto_rawDescData
 }
 
-var file_verification_service_v1_verification_api_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_verification_service_v1_verification_api_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_verification_service_v1_verification_api_proto_goTypes = []any{
-	(*VerifyRequest)(nil),  // 0: verification_service.v1.VerifyRequest
-	(*VerifyResponse)(nil), // 1: verification_service.v1.VerifyResponse
-	(*RetryRequest)(nil),   // 2: verification_service.v1.RetryRequest
-	(*RetryResponse)(nil),  // 3: verification_service.v1.RetryResponse
-	(*GetRequest)(nil),     // 4: verification_service.v1.GetRequest
-	(*GetResponse)(nil),    // 5: verification_service.v1.GetResponse
-	(*CreateRequest)(nil),  // 6: verification_service.v1.CreateRequest
-	(*CreateResponse)(nil), // 7: verification_service.v1.CreateResponse
-	(*Verification)(nil),   // 8: verification_service.v1.Verification
-	(ProviderType)(0),      // 9: verification_service.v1.ProviderType
+	(*FilterRequest)(nil),   // 0: verification_service.v1.FilterRequest
+	(*FilterResponse)(nil),  // 1: verification_service.v1.FilterResponse
+	(*VerifyRequest)(nil),   // 2: verification_service.v1.VerifyRequest
+	(*VerifyResponse)(nil),  // 3: verification_service.v1.VerifyResponse
+	(*RetryRequest)(nil),    // 4: verification_service.v1.RetryRequest
+	(*RetryResponse)(nil),   // 5: verification_service.v1.RetryResponse
+	(*GetRequest)(nil),      // 6: verification_service.v1.GetRequest
+	(*GetResponse)(nil),     // 7: verification_service.v1.GetResponse
+	(*CreateRequest)(nil),   // 8: verification_service.v1.CreateRequest
+	(*CreateResponse)(nil),  // 9: verification_service.v1.CreateResponse
+	(VerificationStatus)(0), // 10: verification_service.v1.VerificationStatus
+	(ProviderType)(0),       // 11: verification_service.v1.ProviderType
+	(*Verification)(nil),    // 12: verification_service.v1.Verification
 }
 var file_verification_service_v1_verification_api_proto_depIdxs = []int32{
-	8, // 0: verification_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
-	9, // 1: verification_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
-	6, // 2: verification_service.v1.VerificationService.Create:input_type -> verification_service.v1.CreateRequest
-	4, // 3: verification_service.v1.VerificationService.Get:input_type -> verification_service.v1.GetRequest
-	2, // 4: verification_service.v1.VerificationService.Retry:input_type -> verification_service.v1.RetryRequest
-	0, // 5: verification_service.v1.VerificationService.Verify:input_type -> verification_service.v1.VerifyRequest
-	7, // 6: verification_service.v1.VerificationService.Create:output_type -> verification_service.v1.CreateResponse
-	5, // 7: verification_service.v1.VerificationService.Get:output_type -> verification_service.v1.GetResponse
-	3, // 8: verification_service.v1.VerificationService.Retry:output_type -> verification_service.v1.RetryResponse
-	1, // 9: verification_service.v1.VerificationService.Verify:output_type -> verification_service.v1.VerifyResponse
-	6, // [6:10] is the sub-list for method output_type
-	2, // [2:6] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	10, // 0: verification_service.v1.FilterRequest.statuses:type_name -> verification_service.v1.VerificationStatus
+	11, // 1: verification_service.v1.FilterRequest.provider_type:type_name -> verification_service.v1.ProviderType
+	12, // 2: verification_service.v1.FilterResponse.verifications:type_name -> verification_service.v1.Verification
+	12, // 3: verification_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
+	11, // 4: verification_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
+	8,  // 5: verification_service.v1.VerificationService.Create:input_type -> verification_service.v1.CreateRequest
+	6,  // 6: verification_service.v1.VerificationService.Get:input_type -> verification_service.v1.GetRequest
+	4,  // 7: verification_service.v1.VerificationService.Retry:input_type -> verification_service.v1.RetryRequest
+	2,  // 8: verification_service.v1.VerificationService.Verify:input_type -> verification_service.v1.VerifyRequest
+	0,  // 9: verification_service.v1.VerificationService.Filter:input_type -> verification_service.v1.FilterRequest
+	9,  // 10: verification_service.v1.VerificationService.Create:output_type -> verification_service.v1.CreateResponse
+	7,  // 11: verification_service.v1.VerificationService.Get:output_type -> verification_service.v1.GetResponse
+	5,  // 12: verification_service.v1.VerificationService.Retry:output_type -> verification_service.v1.RetryResponse
+	3,  // 13: verification_service.v1.VerificationService.Verify:output_type -> verification_service.v1.VerifyResponse
+	1,  // 14: verification_service.v1.VerificationService.Filter:output_type -> verification_service.v1.FilterResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_verification_service_v1_verification_api_proto_init() }
@@ -469,13 +641,14 @@ func file_verification_service_v1_verification_api_proto_init() {
 		return
 	}
 	file_verification_service_v1_verification_proto_init()
+	file_verification_service_v1_verification_api_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_verification_service_v1_verification_api_proto_rawDesc), len(file_verification_service_v1_verification_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -35,6 +35,250 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on FilterRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FilterRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FilterRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FilterRequestMultiError, or
+// nil if none found.
+func (m *FilterRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FilterRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Limit
+
+	// no validation rules for Offset
+
+	if m.ProviderType != nil {
+		// no validation rules for ProviderType
+	}
+
+	if len(errors) > 0 {
+		return FilterRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// FilterRequestMultiError is an error wrapping multiple validation errors
+// returned by FilterRequest.ValidateAll() if the designated constraints
+// aren't met.
+type FilterRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FilterRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FilterRequestMultiError) AllErrors() []error { return m }
+
+// FilterRequestValidationError is the validation error returned by
+// FilterRequest.Validate if the designated constraints aren't met.
+type FilterRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FilterRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FilterRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FilterRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FilterRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FilterRequestValidationError) ErrorName() string { return "FilterRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FilterRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFilterRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FilterRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FilterRequestValidationError{}
+
+// Validate checks the field values on FilterResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *FilterResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on FilterResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in FilterResponseMultiError,
+// or nil if none found.
+func (m *FilterResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *FilterResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetVerifications() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, FilterResponseValidationError{
+						field:  fmt.Sprintf("Verifications[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, FilterResponseValidationError{
+						field:  fmt.Sprintf("Verifications[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return FilterResponseValidationError{
+					field:  fmt.Sprintf("Verifications[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Total
+
+	if len(errors) > 0 {
+		return FilterResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// FilterResponseMultiError is an error wrapping multiple validation errors
+// returned by FilterResponse.ValidateAll() if the designated constraints
+// aren't met.
+type FilterResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m FilterResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m FilterResponseMultiError) AllErrors() []error { return m }
+
+// FilterResponseValidationError is the validation error returned by
+// FilterResponse.Validate if the designated constraints aren't met.
+type FilterResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e FilterResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e FilterResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e FilterResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e FilterResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e FilterResponseValidationError) ErrorName() string { return "FilterResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e FilterResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sFilterResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = FilterResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = FilterResponseValidationError{}
+
 // Validate checks the field values on VerifyRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.

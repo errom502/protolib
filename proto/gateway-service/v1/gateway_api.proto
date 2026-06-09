@@ -14,6 +14,32 @@ service GatewayService {
     rpc Get(GetRequest) returns (GetResponse);
     // Повторная верификация для существующей верификации
     rpc Retry(RetryRequest) returns (RetryResponse);
+    // Фильтр
+    //  Фильтры применяются по правилу "И"
+    rpc Filter(FilterRequest) returns (FilterResponse);
+}
+
+message FilterRequest{
+    // Набор идентификаторов верификаций
+    repeated string ids = 1;
+    // Набор внешних идентификаторов
+    repeated string ext_ids = 2;
+    // Набор значений целей (Пример: some.some@mail.ru)
+    repeated string targets = 4;
+    // Набор статусов варификации
+    repeated verification_service.v1.VerificationStatus statuses = 5;
+    // Тип провайдера
+    optional verification_service.v1.ProviderType provider_type = 3;
+
+    // Лимит
+    int32 limit = 6;
+    // Отступ
+    int32 offset = 7;
+}
+
+message FilterResponse{
+    repeated verification_service.v1.Verification verifications = 1;
+    int32 total = 2; 
 }
 
 message RetryRequest{

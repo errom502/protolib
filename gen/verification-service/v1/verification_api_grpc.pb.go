@@ -23,6 +23,7 @@ const (
 	VerificationService_Get_FullMethodName    = "/verification_service.v1.VerificationService/Get"
 	VerificationService_Retry_FullMethodName  = "/verification_service.v1.VerificationService/Retry"
 	VerificationService_Verify_FullMethodName = "/verification_service.v1.VerificationService/Verify"
+	VerificationService_Filter_FullMethodName = "/verification_service.v1.VerificationService/Filter"
 )
 
 // VerificationServiceClient is the client API for VerificationService service.
@@ -39,6 +40,10 @@ type VerificationServiceClient interface {
 	Retry(ctx context.Context, in *RetryRequest, opts ...grpc.CallOption) (*RetryResponse, error)
 	// Подтверждение верификации
 	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
+	// Фильтр
+	//
+	//	Фильтры применяются по правилу "И"
+	Filter(ctx context.Context, in *FilterRequest, opts ...grpc.CallOption) (*FilterResponse, error)
 }
 
 type verificationServiceClient struct {
@@ -89,6 +94,16 @@ func (c *verificationServiceClient) Verify(ctx context.Context, in *VerifyReques
 	return out, nil
 }
 
+func (c *verificationServiceClient) Filter(ctx context.Context, in *FilterRequest, opts ...grpc.CallOption) (*FilterResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FilterResponse)
+	err := c.cc.Invoke(ctx, VerificationService_Filter_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VerificationServiceServer is the server API for VerificationService service.
 // All implementations must embed UnimplementedVerificationServiceServer
 // for forward compatibility.
@@ -103,6 +118,10 @@ type VerificationServiceServer interface {
 	Retry(context.Context, *RetryRequest) (*RetryResponse, error)
 	// Подтверждение верификации
 	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
+	// Фильтр
+	//
+	//	Фильтры применяются по правилу "И"
+	Filter(context.Context, *FilterRequest) (*FilterResponse, error)
 	mustEmbedUnimplementedVerificationServiceServer()
 }
 
@@ -124,6 +143,9 @@ func (UnimplementedVerificationServiceServer) Retry(context.Context, *RetryReque
 }
 func (UnimplementedVerificationServiceServer) Verify(context.Context, *VerifyRequest) (*VerifyResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Verify not implemented")
+}
+func (UnimplementedVerificationServiceServer) Filter(context.Context, *FilterRequest) (*FilterResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Filter not implemented")
 }
 func (UnimplementedVerificationServiceServer) mustEmbedUnimplementedVerificationServiceServer() {}
 func (UnimplementedVerificationServiceServer) testEmbeddedByValue()                             {}
@@ -218,6 +240,24 @@ func _VerificationService_Verify_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VerificationService_Filter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VerificationServiceServer).Filter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VerificationService_Filter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VerificationServiceServer).Filter(ctx, req.(*FilterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // VerificationService_ServiceDesc is the grpc.ServiceDesc for VerificationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -240,6 +280,10 @@ var VerificationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Verify",
 			Handler:    _VerificationService_Verify_Handler,
+		},
+		{
+			MethodName: "Filter",
+			Handler:    _VerificationService_Filter_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

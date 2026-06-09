@@ -22,7 +22,7 @@ const (
 	GatewayService_Create_FullMethodName = "/gateway_service.v1.GatewayService/Create"
 	GatewayService_Get_FullMethodName    = "/gateway_service.v1.GatewayService/Get"
 	GatewayService_Retry_FullMethodName  = "/gateway_service.v1.GatewayService/Retry"
-	GatewayService_Verify_FullMethodName = "/gateway_service.v1.GatewayService/Verify"
+	GatewayService_Filter_FullMethodName = "/gateway_service.v1.GatewayService/Filter"
 )
 
 // GatewayServiceClient is the client API for GatewayService service.
@@ -37,8 +37,10 @@ type GatewayServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	// Повторная верификация для существующей верификации
 	Retry(ctx context.Context, in *RetryRequest, opts ...grpc.CallOption) (*RetryResponse, error)
-	// Подтверждение верификации
-	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
+	// Фильтр
+	//
+	//	Фильтры применяются по правилу "И"
+	Filter(ctx context.Context, in *FilterRequest, opts ...grpc.CallOption) (*FilterResponse, error)
 }
 
 type gatewayServiceClient struct {
@@ -79,10 +81,10 @@ func (c *gatewayServiceClient) Retry(ctx context.Context, in *RetryRequest, opts
 	return out, nil
 }
 
-func (c *gatewayServiceClient) Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error) {
+func (c *gatewayServiceClient) Filter(ctx context.Context, in *FilterRequest, opts ...grpc.CallOption) (*FilterResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VerifyResponse)
-	err := c.cc.Invoke(ctx, GatewayService_Verify_FullMethodName, in, out, cOpts...)
+	out := new(FilterResponse)
+	err := c.cc.Invoke(ctx, GatewayService_Filter_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -101,8 +103,10 @@ type GatewayServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	// Повторная верификация для существующей верификации
 	Retry(context.Context, *RetryRequest) (*RetryResponse, error)
-	// Подтверждение верификации
-	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
+	// Фильтр
+	//
+	//	Фильтры применяются по правилу "И"
+	Filter(context.Context, *FilterRequest) (*FilterResponse, error)
 	mustEmbedUnimplementedGatewayServiceServer()
 }
 
@@ -122,8 +126,8 @@ func (UnimplementedGatewayServiceServer) Get(context.Context, *GetRequest) (*Get
 func (UnimplementedGatewayServiceServer) Retry(context.Context, *RetryRequest) (*RetryResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Retry not implemented")
 }
-func (UnimplementedGatewayServiceServer) Verify(context.Context, *VerifyRequest) (*VerifyResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Verify not implemented")
+func (UnimplementedGatewayServiceServer) Filter(context.Context, *FilterRequest) (*FilterResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Filter not implemented")
 }
 func (UnimplementedGatewayServiceServer) mustEmbedUnimplementedGatewayServiceServer() {}
 func (UnimplementedGatewayServiceServer) testEmbeddedByValue()                        {}
@@ -200,20 +204,20 @@ func _GatewayService_Retry_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GatewayService_Verify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VerifyRequest)
+func _GatewayService_Filter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServiceServer).Verify(ctx, in)
+		return srv.(GatewayServiceServer).Filter(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GatewayService_Verify_FullMethodName,
+		FullMethod: GatewayService_Filter_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayServiceServer).Verify(ctx, req.(*VerifyRequest))
+		return srv.(GatewayServiceServer).Filter(ctx, req.(*FilterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -238,8 +242,8 @@ var GatewayService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _GatewayService_Retry_Handler,
 		},
 		{
-			MethodName: "Verify",
-			Handler:    _GatewayService_Verify_Handler,
+			MethodName: "Filter",
+			Handler:    _GatewayService_Filter_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

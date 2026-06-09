@@ -36,49 +36,53 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = verificationv1.ProviderType(0)
+	_ = verificationv1.VerificationStatus(0)
 )
 
-// Validate checks the field values on VerifyRequest with the rules defined in
+// Validate checks the field values on FilterRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *VerifyRequest) Validate() error {
+func (m *FilterRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on VerifyRequest with the rules defined
+// ValidateAll checks the field values on FilterRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in VerifyRequestMultiError, or
+// result is a list of violation errors wrapped in FilterRequestMultiError, or
 // nil if none found.
-func (m *VerifyRequest) ValidateAll() error {
+func (m *FilterRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *VerifyRequest) validate(all bool) error {
+func (m *FilterRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Id
+	// no validation rules for Limit
 
-	// no validation rules for HashSecret
+	// no validation rules for Offset
+
+	if m.ProviderType != nil {
+		// no validation rules for ProviderType
+	}
 
 	if len(errors) > 0 {
-		return VerifyRequestMultiError(errors)
+		return FilterRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// VerifyRequestMultiError is an error wrapping multiple validation errors
-// returned by VerifyRequest.ValidateAll() if the designated constraints
+// FilterRequestMultiError is an error wrapping multiple validation errors
+// returned by FilterRequest.ValidateAll() if the designated constraints
 // aren't met.
-type VerifyRequestMultiError []error
+type FilterRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m VerifyRequestMultiError) Error() string {
+func (m FilterRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -87,11 +91,11 @@ func (m VerifyRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m VerifyRequestMultiError) AllErrors() []error { return m }
+func (m FilterRequestMultiError) AllErrors() []error { return m }
 
-// VerifyRequestValidationError is the validation error returned by
-// VerifyRequest.Validate if the designated constraints aren't met.
-type VerifyRequestValidationError struct {
+// FilterRequestValidationError is the validation error returned by
+// FilterRequest.Validate if the designated constraints aren't met.
+type FilterRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -99,22 +103,22 @@ type VerifyRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e VerifyRequestValidationError) Field() string { return e.field }
+func (e FilterRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e VerifyRequestValidationError) Reason() string { return e.reason }
+func (e FilterRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e VerifyRequestValidationError) Cause() error { return e.cause }
+func (e FilterRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e VerifyRequestValidationError) Key() bool { return e.key }
+func (e FilterRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e VerifyRequestValidationError) ErrorName() string { return "VerifyRequestValidationError" }
+func (e FilterRequestValidationError) ErrorName() string { return "FilterRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e VerifyRequestValidationError) Error() string {
+func (e FilterRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -126,14 +130,14 @@ func (e VerifyRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sVerifyRequest.%s: %s%s",
+		"invalid %sFilterRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = VerifyRequestValidationError{}
+var _ error = FilterRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -141,44 +145,80 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = VerifyRequestValidationError{}
+} = FilterRequestValidationError{}
 
-// Validate checks the field values on VerifyResponse with the rules defined in
+// Validate checks the field values on FilterResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *VerifyResponse) Validate() error {
+func (m *FilterResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on VerifyResponse with the rules defined
+// ValidateAll checks the field values on FilterResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in VerifyResponseMultiError,
+// result is a list of violation errors wrapped in FilterResponseMultiError,
 // or nil if none found.
-func (m *VerifyResponse) ValidateAll() error {
+func (m *FilterResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *VerifyResponse) validate(all bool) error {
+func (m *FilterResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
+	for idx, item := range m.GetVerifications() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, FilterResponseValidationError{
+						field:  fmt.Sprintf("Verifications[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, FilterResponseValidationError{
+						field:  fmt.Sprintf("Verifications[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return FilterResponseValidationError{
+					field:  fmt.Sprintf("Verifications[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Total
+
 	if len(errors) > 0 {
-		return VerifyResponseMultiError(errors)
+		return FilterResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// VerifyResponseMultiError is an error wrapping multiple validation errors
-// returned by VerifyResponse.ValidateAll() if the designated constraints
+// FilterResponseMultiError is an error wrapping multiple validation errors
+// returned by FilterResponse.ValidateAll() if the designated constraints
 // aren't met.
-type VerifyResponseMultiError []error
+type FilterResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m VerifyResponseMultiError) Error() string {
+func (m FilterResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -187,11 +227,11 @@ func (m VerifyResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m VerifyResponseMultiError) AllErrors() []error { return m }
+func (m FilterResponseMultiError) AllErrors() []error { return m }
 
-// VerifyResponseValidationError is the validation error returned by
-// VerifyResponse.Validate if the designated constraints aren't met.
-type VerifyResponseValidationError struct {
+// FilterResponseValidationError is the validation error returned by
+// FilterResponse.Validate if the designated constraints aren't met.
+type FilterResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -199,22 +239,22 @@ type VerifyResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e VerifyResponseValidationError) Field() string { return e.field }
+func (e FilterResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e VerifyResponseValidationError) Reason() string { return e.reason }
+func (e FilterResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e VerifyResponseValidationError) Cause() error { return e.cause }
+func (e FilterResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e VerifyResponseValidationError) Key() bool { return e.key }
+func (e FilterResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e VerifyResponseValidationError) ErrorName() string { return "VerifyResponseValidationError" }
+func (e FilterResponseValidationError) ErrorName() string { return "FilterResponseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e VerifyResponseValidationError) Error() string {
+func (e FilterResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -226,14 +266,14 @@ func (e VerifyResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sVerifyResponse.%s: %s%s",
+		"invalid %sFilterResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = VerifyResponseValidationError{}
+var _ error = FilterResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -241,7 +281,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = VerifyResponseValidationError{}
+} = FilterResponseValidationError{}
 
 // Validate checks the field values on RetryRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first

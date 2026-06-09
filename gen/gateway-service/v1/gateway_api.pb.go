@@ -22,30 +22,40 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type VerifyRequest struct {
+type FilterRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Идентификатор верификации
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Хэш секрета
-	HashSecret    string `protobuf:"bytes,2,opt,name=hash_secret,json=hashSecret,proto3" json:"hash_secret,omitempty"`
+	// Набор идентификаторов верификаций
+	Ids []string `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
+	// Набор внешних идентификаторов
+	ExtIds []string `protobuf:"bytes,2,rep,name=ext_ids,json=extIds,proto3" json:"ext_ids,omitempty"`
+	// Набор значений целей (Пример: some.some@mail.ru)
+	Targets []string `protobuf:"bytes,4,rep,name=targets,proto3" json:"targets,omitempty"`
+	// Набор статусов варификации
+	Statuses []v1.VerificationStatus `protobuf:"varint,5,rep,packed,name=statuses,proto3,enum=verification_service.v1.VerificationStatus" json:"statuses,omitempty"`
+	// Тип провайдера
+	ProviderType *v1.ProviderType `protobuf:"varint,3,opt,name=provider_type,json=providerType,proto3,enum=verification_service.v1.ProviderType,oneof" json:"provider_type,omitempty"`
+	// Лимит
+	Limit int32 `protobuf:"varint,6,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Отступ
+	Offset        int32 `protobuf:"varint,7,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *VerifyRequest) Reset() {
-	*x = VerifyRequest{}
+func (x *FilterRequest) Reset() {
+	*x = FilterRequest{}
 	mi := &file_gateway_service_v1_gateway_api_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *VerifyRequest) String() string {
+func (x *FilterRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*VerifyRequest) ProtoMessage() {}
+func (*FilterRequest) ProtoMessage() {}
 
-func (x *VerifyRequest) ProtoReflect() protoreflect.Message {
+func (x *FilterRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_gateway_service_v1_gateway_api_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -57,45 +67,82 @@ func (x *VerifyRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use VerifyRequest.ProtoReflect.Descriptor instead.
-func (*VerifyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FilterRequest.ProtoReflect.Descriptor instead.
+func (*FilterRequest) Descriptor() ([]byte, []int) {
 	return file_gateway_service_v1_gateway_api_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *VerifyRequest) GetId() string {
+func (x *FilterRequest) GetIds() []string {
 	if x != nil {
-		return x.Id
+		return x.Ids
 	}
-	return ""
+	return nil
 }
 
-func (x *VerifyRequest) GetHashSecret() string {
+func (x *FilterRequest) GetExtIds() []string {
 	if x != nil {
-		return x.HashSecret
+		return x.ExtIds
 	}
-	return ""
+	return nil
 }
 
-type VerifyResponse struct {
+func (x *FilterRequest) GetTargets() []string {
+	if x != nil {
+		return x.Targets
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetStatuses() []v1.VerificationStatus {
+	if x != nil {
+		return x.Statuses
+	}
+	return nil
+}
+
+func (x *FilterRequest) GetProviderType() v1.ProviderType {
+	if x != nil && x.ProviderType != nil {
+		return *x.ProviderType
+	}
+	return v1.ProviderType(0)
+}
+
+func (x *FilterRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *FilterRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+type FilterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Verifications []*v1.Verification     `protobuf:"bytes,1,rep,name=verifications,proto3" json:"verifications,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *VerifyResponse) Reset() {
-	*x = VerifyResponse{}
+func (x *FilterResponse) Reset() {
+	*x = FilterResponse{}
 	mi := &file_gateway_service_v1_gateway_api_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *VerifyResponse) String() string {
+func (x *FilterResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*VerifyResponse) ProtoMessage() {}
+func (*FilterResponse) ProtoMessage() {}
 
-func (x *VerifyResponse) ProtoReflect() protoreflect.Message {
+func (x *FilterResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_gateway_service_v1_gateway_api_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -107,9 +154,23 @@ func (x *VerifyResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use VerifyResponse.ProtoReflect.Descriptor instead.
-func (*VerifyResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use FilterResponse.ProtoReflect.Descriptor instead.
+func (*FilterResponse) Descriptor() ([]byte, []int) {
 	return file_gateway_service_v1_gateway_api_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *FilterResponse) GetVerifications() []*v1.Verification {
+	if x != nil {
+		return x.Verifications
+	}
+	return nil
+}
+
+func (x *FilterResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
 }
 
 type RetryRequest struct {
@@ -395,12 +456,19 @@ var File_gateway_service_v1_gateway_api_proto protoreflect.FileDescriptor
 
 const file_gateway_service_v1_gateway_api_proto_rawDesc = "" +
 	"\n" +
-	"$gateway-service/v1/gateway_api.proto\x12\x12gateway_service.v1\x1a.verification-service/v1/verification_api.proto\x1a*verification-service/v1/verification.proto\"@\n" +
-	"\rVerifyRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1f\n" +
-	"\vhash_secret\x18\x02 \x01(\tR\n" +
-	"hashSecret\"\x10\n" +
-	"\x0eVerifyResponse\"\x1e\n" +
+	"$gateway-service/v1/gateway_api.proto\x12\x12gateway_service.v1\x1a.verification-service/v1/verification_api.proto\x1a*verification-service/v1/verification.proto\"\xae\x02\n" +
+	"\rFilterRequest\x12\x10\n" +
+	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x17\n" +
+	"\aext_ids\x18\x02 \x03(\tR\x06extIds\x12\x18\n" +
+	"\atargets\x18\x04 \x03(\tR\atargets\x12G\n" +
+	"\bstatuses\x18\x05 \x03(\x0e2+.verification_service.v1.VerificationStatusR\bstatuses\x12O\n" +
+	"\rprovider_type\x18\x03 \x01(\x0e2%.verification_service.v1.ProviderTypeH\x00R\fproviderType\x88\x01\x01\x12\x14\n" +
+	"\x05limit\x18\x06 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\a \x01(\x05R\x06offsetB\x10\n" +
+	"\x0e_provider_type\"s\n" +
+	"\x0eFilterResponse\x12K\n" +
+	"\rverifications\x18\x01 \x03(\v2%.verification_service.v1.VerificationR\rverifications\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\x1e\n" +
 	"\fRetryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\x0f\n" +
 	"\rRetryResponse\"\x1c\n" +
@@ -419,7 +487,7 @@ const file_gateway_service_v1_gateway_api_proto_rawDesc = "" +
 	"\x06Create\x12!.gateway_service.v1.CreateRequest\x1a\".gateway_service.v1.CreateResponse\x12F\n" +
 	"\x03Get\x12\x1e.gateway_service.v1.GetRequest\x1a\x1f.gateway_service.v1.GetResponse\x12L\n" +
 	"\x05Retry\x12 .gateway_service.v1.RetryRequest\x1a!.gateway_service.v1.RetryResponse\x12O\n" +
-	"\x06Verify\x12!.gateway_service.v1.VerifyRequest\x1a\".gateway_service.v1.VerifyResponseB?Z=github.com/errom502/protolib/gen/gateway-service/v1;gatewayv1b\x06proto3"
+	"\x06Filter\x12!.gateway_service.v1.FilterRequest\x1a\".gateway_service.v1.FilterResponseB?Z=github.com/errom502/protolib/gen/gateway-service/v1;gatewayv1b\x06proto3"
 
 var (
 	file_gateway_service_v1_gateway_api_proto_rawDescOnce sync.Once
@@ -435,33 +503,37 @@ func file_gateway_service_v1_gateway_api_proto_rawDescGZIP() []byte {
 
 var file_gateway_service_v1_gateway_api_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_gateway_service_v1_gateway_api_proto_goTypes = []any{
-	(*VerifyRequest)(nil),   // 0: gateway_service.v1.VerifyRequest
-	(*VerifyResponse)(nil),  // 1: gateway_service.v1.VerifyResponse
-	(*RetryRequest)(nil),    // 2: gateway_service.v1.RetryRequest
-	(*RetryResponse)(nil),   // 3: gateway_service.v1.RetryResponse
-	(*GetRequest)(nil),      // 4: gateway_service.v1.GetRequest
-	(*GetResponse)(nil),     // 5: gateway_service.v1.GetResponse
-	(*CreateRequest)(nil),   // 6: gateway_service.v1.CreateRequest
-	(*CreateResponse)(nil),  // 7: gateway_service.v1.CreateResponse
-	(*v1.Verification)(nil), // 8: verification_service.v1.Verification
-	(v1.ProviderType)(0),    // 9: verification_service.v1.ProviderType
+	(*FilterRequest)(nil),      // 0: gateway_service.v1.FilterRequest
+	(*FilterResponse)(nil),     // 1: gateway_service.v1.FilterResponse
+	(*RetryRequest)(nil),       // 2: gateway_service.v1.RetryRequest
+	(*RetryResponse)(nil),      // 3: gateway_service.v1.RetryResponse
+	(*GetRequest)(nil),         // 4: gateway_service.v1.GetRequest
+	(*GetResponse)(nil),        // 5: gateway_service.v1.GetResponse
+	(*CreateRequest)(nil),      // 6: gateway_service.v1.CreateRequest
+	(*CreateResponse)(nil),     // 7: gateway_service.v1.CreateResponse
+	(v1.VerificationStatus)(0), // 8: verification_service.v1.VerificationStatus
+	(v1.ProviderType)(0),       // 9: verification_service.v1.ProviderType
+	(*v1.Verification)(nil),    // 10: verification_service.v1.Verification
 }
 var file_gateway_service_v1_gateway_api_proto_depIdxs = []int32{
-	8, // 0: gateway_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
-	9, // 1: gateway_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
-	6, // 2: gateway_service.v1.GatewayService.Create:input_type -> gateway_service.v1.CreateRequest
-	4, // 3: gateway_service.v1.GatewayService.Get:input_type -> gateway_service.v1.GetRequest
-	2, // 4: gateway_service.v1.GatewayService.Retry:input_type -> gateway_service.v1.RetryRequest
-	0, // 5: gateway_service.v1.GatewayService.Verify:input_type -> gateway_service.v1.VerifyRequest
-	7, // 6: gateway_service.v1.GatewayService.Create:output_type -> gateway_service.v1.CreateResponse
-	5, // 7: gateway_service.v1.GatewayService.Get:output_type -> gateway_service.v1.GetResponse
-	3, // 8: gateway_service.v1.GatewayService.Retry:output_type -> gateway_service.v1.RetryResponse
-	1, // 9: gateway_service.v1.GatewayService.Verify:output_type -> gateway_service.v1.VerifyResponse
-	6, // [6:10] is the sub-list for method output_type
-	2, // [2:6] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	8,  // 0: gateway_service.v1.FilterRequest.statuses:type_name -> verification_service.v1.VerificationStatus
+	9,  // 1: gateway_service.v1.FilterRequest.provider_type:type_name -> verification_service.v1.ProviderType
+	10, // 2: gateway_service.v1.FilterResponse.verifications:type_name -> verification_service.v1.Verification
+	10, // 3: gateway_service.v1.GetResponse.verification:type_name -> verification_service.v1.Verification
+	9,  // 4: gateway_service.v1.CreateRequest.provider_type:type_name -> verification_service.v1.ProviderType
+	6,  // 5: gateway_service.v1.GatewayService.Create:input_type -> gateway_service.v1.CreateRequest
+	4,  // 6: gateway_service.v1.GatewayService.Get:input_type -> gateway_service.v1.GetRequest
+	2,  // 7: gateway_service.v1.GatewayService.Retry:input_type -> gateway_service.v1.RetryRequest
+	0,  // 8: gateway_service.v1.GatewayService.Filter:input_type -> gateway_service.v1.FilterRequest
+	7,  // 9: gateway_service.v1.GatewayService.Create:output_type -> gateway_service.v1.CreateResponse
+	5,  // 10: gateway_service.v1.GatewayService.Get:output_type -> gateway_service.v1.GetResponse
+	3,  // 11: gateway_service.v1.GatewayService.Retry:output_type -> gateway_service.v1.RetryResponse
+	1,  // 12: gateway_service.v1.GatewayService.Filter:output_type -> gateway_service.v1.FilterResponse
+	9,  // [9:13] is the sub-list for method output_type
+	5,  // [5:9] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_gateway_service_v1_gateway_api_proto_init() }
@@ -469,6 +541,7 @@ func file_gateway_service_v1_gateway_api_proto_init() {
 	if File_gateway_service_v1_gateway_api_proto != nil {
 		return
 	}
+	file_gateway_service_v1_gateway_api_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

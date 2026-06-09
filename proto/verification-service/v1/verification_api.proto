@@ -15,8 +15,33 @@ service VerificationService {
     rpc Retry(RetryRequest) returns (RetryResponse);
     // Подтверждение верификации
     rpc Verify(VerifyRequest) returns (VerifyResponse);
+    // Фильтр
+    //  Фильтры применяются по правилу "И"
+    rpc Filter(FilterRequest) returns (FilterResponse);
 }
 
+message FilterRequest{
+    // Набор идентификаторов верификаций
+    repeated string ids = 1;
+    // Набор внешних идентификаторов
+    repeated string ext_ids = 2;
+    // Набор значений целей (Пример: some.some@mail.ru)
+    repeated string targets = 4;
+    // Набор статусов варификации
+    repeated VerificationStatus statuses = 5;
+    // Тип провайдера
+    optional ProviderType provider_type = 3;
+
+    // Лимит
+    int32 limit = 6;
+    // Отступ
+    int32 offset = 7;
+}
+
+message FilterResponse{
+    repeated Verification verifications = 1;
+    int32 total = 2; 
+}
 message VerifyRequest{
     // Идентификатор верификации
     string id = 1;
